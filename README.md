@@ -1,2 +1,2 @@
 # Sublime-SUCC
-SUCC syntax highlighting for Sublime Text 3
+[SUCC](https://github.com/JimmyCushnie/SUCC) syntax highlighting for Sublime Text 3
