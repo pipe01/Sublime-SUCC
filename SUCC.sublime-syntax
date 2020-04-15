@@ -1,0 +1,64 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: SUCC
+file_extensions:
+  - succ
+scope: source.succ
+contexts:
+  main:
+    #Line comments
+    - match: '#'
+      scope: punctuation.definition.comment.succ
+      push: line_comment
+
+    # Keys
+    - match: '^'
+      push: keyvalue_pair
+
+  double_quoted_string:
+    - meta_scope: string.quoted.double.succ
+    - match: '\\.'
+      scope: constant.character.escape.succ
+    - match: '"'
+      scope: punctuation.definition.string.end.succ
+      pop: true
+
+  line_comment:
+    - meta_scope: comment.line.succ
+    - match: $
+      pop: true
+
+  block_string:
+    - meta_scope: string.quoted.double.succ
+    - match: '\\.'
+      scope: constant.character.escape.succ
+    - match: '"""'
+      scope: punctuation.definition.string.end.succ
+      pop: true
+
+  value:
+    - meta_scope: string.unquoted.succ
+    - match: '"""'
+      scope: punctuation.definition.string.begin.succ
+      push: block_string
+    - match: '"'
+      scope: punctuation.definition.string.begin.succ
+      push: double_quoted_string
+    - match: '\b(-)?[0-9.]+\b'
+      scope: constant.numeric.succ
+    - match: '#'
+      scope: comment.line.succ
+      push: line_comment
+    - match: $
+      pop: true
+
+  keyvalue_pair:
+    #- meta_scope: string.unquoted.succ
+    - match: '.*?(:)'
+      captures:
+        0: entity.name.tag.succ
+        1: punctuation.separator.succ
+      push: value
+    - match: $
+      pop: true
